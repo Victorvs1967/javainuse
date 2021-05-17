@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vvs.springbootangular.model.Employee;
+import com.vvs.springbootangular.model.User;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin()
 @RestController
 @RequestMapping("/employees")
 public class EmplController {
@@ -24,6 +25,12 @@ public class EmplController {
   @GetMapping
   public List<Employee> firstPage() {
     return employees;
+  }
+
+  @GetMapping(produces = "application/json")
+  @RequestMapping({"/validateLogin"})
+  public User validateLogin() {
+    return new User("User successfully authenticated");
   }
 
   @DeleteMapping("/{id}")

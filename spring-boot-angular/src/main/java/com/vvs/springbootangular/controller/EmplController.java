@@ -49,28 +49,19 @@ public class EmplController {
   @PostMapping
   public Employee create(@RequestBody Employee emp) {
     employees.add(emp);
-    System.out.println(employees);
     return emp;
   }
 
   private static List<Employee> createList() {
     List<Employee> tempEmployees = new ArrayList<>();
 
-    Employee emp1 = new Employee();
-    emp1.setName("emp1");
-    emp1.setDesignation("manager");
-    emp1.setId("1");
-    emp1.setSalary(1000);
-
-    Employee emp2 = new Employee();
-    emp2.setName("emp2");
-    emp2.setDesignation("developer");
-    emp2.setId("2");
-    emp2.setSalary(2000);
+    Employee emp1 = new Employee("1", "emp1", "manager", 1000);
+    Employee emp2 = new Employee("2", "emp2", "developer", 2000);
 
     tempEmployees.add(emp1);
     tempEmployees.add(emp2);
 
     return tempEmployees;
   }
+
 }

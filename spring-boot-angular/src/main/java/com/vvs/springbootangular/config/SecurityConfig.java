@@ -12,16 +12,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication().withUser("victor").password("{noop}victor77").roles("USER");
+    auth.inMemoryAuthentication()
+          .withUser("victor")
+          .password("{noop}victor77")
+          .roles("USER");
   }
   
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable()
-        .authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-        .anyRequest().authenticated().and()
-        .httpBasic();
+    http
+      .csrf().disable()
+      .authorizeRequests()
+      .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+      .anyRequest().authenticated().and()
+      .httpBasic();
   }
 
 }

@@ -1,9 +1,10 @@
 package com.vvs.springbootjwt.controller;
 
+import java.util.Objects;
+
 import com.vvs.springbootjwt.jwt.JwtTokenUtil;
 import com.vvs.springbootjwt.model.JwtRequest;
 import com.vvs.springbootjwt.model.JwtResponse;
-import com.vvs.springbootjwt.service.JwtUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,23 +30,30 @@ public class JwtAuthenticationController {
   private JwtTokenUtil jwtTokenUtil;
 
   @Autowired
-  private JwtUserDetailsService userDetailsService;
+  private UserDetailsService jwtUserDetailsService;
 
   @PostMapping("/authenticate")
   public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-    authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-    final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+
+    String username = authenticationRequest.getUsername();
+    String password = authenticationRequest.getPassword();
+    authenticate(username, password);
+    final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
     final String token = jwtTokenUtil.generateToken(userDetails);
+
     return ResponseEntity.ok(new JwtResponse(token));
   }
 
-  private void authenticate(String username, String password) throws Exception {
+  private void authenticate(String username, String password) throws DisabledException, BadCredentialsException {
+    Objects.requireNonNull(username);
+    Objects.requireNonNull(password);
+
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     } catch (DisabledException e) {
-      throw new Exception("USER_DISABLE", e);
+      throw new DisabledException("USER_DISABLE", e);
     } catch (BadCredentialsException e) {
-      throw new Exception("INVALID_CREDENTIALS", e);
+      throw new BadCredentialsException("INVALID_CREDENTIALS", e);
     }
   }
 }

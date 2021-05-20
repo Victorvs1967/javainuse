@@ -5,6 +5,8 @@ import java.util.Objects;
 import com.vvs.springbootangular.jwt.JwtTokenUtil;
 import com.vvs.springbootangular.model.JwtRequest;
 import com.vvs.springbootangular.model.JwtResponse;
+import com.vvs.springbootangular.model.UserDTO;
+import com.vvs.springbootangular.service.JwtUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +31,7 @@ public class JwtAuthenticationController {
   private JwtTokenUtil jwtTokenUtil;
 
   @Autowired
-  private UserDetailsService jwtUserDetailsService;
+  private JwtUserDetailsService userDetailsService;
 
   @PostMapping("/authenticate")
   public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -38,10 +39,15 @@ public class JwtAuthenticationController {
     String username = authenticationRequest.getUsername();
     String password = authenticationRequest.getPassword();
     authenticate(username, password);
-    final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+    final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
     final String token = jwtTokenUtil.generateToken(userDetails);
 
     return ResponseEntity.ok(new JwtResponse(token));
+  }
+
+  @PostMapping("/register")
+  public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+    return ResponseEntity.ok(userDetailsService.save(user));
   }
 
   private void authenticate(String username, String password) throws DisabledException, BadCredentialsException {

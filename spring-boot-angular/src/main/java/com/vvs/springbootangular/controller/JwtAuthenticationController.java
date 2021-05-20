@@ -2,6 +2,7 @@ package com.vvs.springbootangular.controller;
 
 import java.util.Objects;
 
+import com.vvs.springbootangular.dao.UserDao;
 import com.vvs.springbootangular.jwt.JwtTokenUtil;
 import com.vvs.springbootangular.model.JwtRequest;
 import com.vvs.springbootangular.model.JwtResponse;
@@ -25,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class JwtAuthenticationController {
   
   @Autowired
+  private UserDao userDao;
+
+  @Autowired
   private AuthenticationManager authenticationManager;
 
   @Autowired
@@ -47,7 +51,15 @@ public class JwtAuthenticationController {
 
   @PostMapping("/register")
   public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-    return ResponseEntity.ok(userDetailsService.save(user));
+    try {
+      if (this.userDao.findByUsername(user.getUsername()) == null) {
+        return ResponseEntity.ok(userDetailsService.save(user));
+      } else {
+        throw new Exception("Username already exist: " + user.getUsername());
+      }
+    } catch (Exception e) {
+      throw new Exception("Invalide registration", e);
+    }
   }
 
   private void authenticate(String username, String password) throws DisabledException, BadCredentialsException {

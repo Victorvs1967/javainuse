@@ -6,8 +6,18 @@
       "server": "localhost",
       "port": 5432,
       "driver": "PostgreSQL",
-      "name": "postgresql-victors",
+      "name": "postgres-bootdb",
       "database": "bootdb",
+      "username": "victors",
+      "password": "victor77"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "postgres-bookstore",
+      "database": "bookstore",
       "username": "victors",
       "password": "victor77"
     }

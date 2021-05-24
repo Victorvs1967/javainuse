@@ -1,0 +1,28 @@
+<h1>Books Admin</h1>
+<a class="btn btn-primary mb-3" (click)="addBook()">Add Book</a>
+<div class="container-flid row">
+  <div class="col-md-6">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Book Name</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td>{{ book.id }}</td>
+          <td>{{ book.name }}</td>
+          <td>
+            <button type="button" class="btn btn-primary" (click)="viewBook(book.id || 1)">Show details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <app-addbook *ngIf="action === 'edit' || action === 'add'" [book]="selectedBook" (bookAddedEvent)="refreshData()"></app-addbook>
+    <app-viewbook *ngIf="action === 'view'" [book]="selectedBook" (bookDeletedEvent)="refreshData()"></app-viewbook>
+  </div>
+</div>

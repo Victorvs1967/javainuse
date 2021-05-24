@@ -1,0 +1,47 @@
+<div class="container-fluid row">
+  <div class="col-md-2">
+    <h1>Books</h1>
+  </div>
+  <div class="col-md-10 custom-products-cart-container mb-4">
+    <div class="offset-md-8">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="btn btn-info btn-lg" id="dropdownMenuButton" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+            <span class="material-icons">shopping_cart</span>
+            <span> Books Added In Cart </span>
+            <span class="caret">{{ cartBooks.length }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-cart col-md-8 px-4" aria-labelledby="dropdownMenuButton">
+            <li *ngFor="let item of cartBooks">
+              <div class="dropdown-item product-cart-item row">
+                <div class="col-md-8" *ngIf="item">{{ item.name | titlecase }}</div>
+                <div class="col-md-4" *ngIf="item"><strong>{{ item.price | currency }}</strong></div>
+              </div>
+            </li>
+            <hr>
+            <li><a class="btn btn-small btn-success px-4" role="button" (click)="goToCart()">View Cart</a></li>
+            <br>
+            <li *ngIf="cartBooks.length > 0"><a class="btn btn-small btn-warning px-3" role="button" (click)="emptyCart()">Empty Cart</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid row row-cols-1 row-cols-md-3 g-4">
+  <div class="col-md-4 mb-2" *ngFor="let book of books; let i-index">
+    <div class="card card-block">
+      <img src="{{ book.retrivedImage }}" alt="book image" class="custom-image-style" img height="300" width="200" style="margin-left: 22%; margin-top: 10px;">
+      <div class="book-desk-container row">
+        <div>
+          <h5 class="card-title" style="margin-left: 22%;">"{{ book.name | titlecase }}": {{ book.price | currency }}</h5>
+          <p class="card-text" style="margin-left: 22%;">{{ book.author | titlecase }}</p>
+          <div class="offset-md-4 col-md-6">
+            <button class="btn btn-primary btn-sm px-4" (click)="addToCart(book.id || 1)">Add To Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

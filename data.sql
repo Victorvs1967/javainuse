@@ -1,0 +1,1 @@
+INSERT INTO public.books (name, author, price, id) VALUES ('book1', 'author1', 10, 1) returning id;

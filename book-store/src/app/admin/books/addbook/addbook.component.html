@@ -10,7 +10,7 @@
   <input type="text" class="form-control" id="price" placeholder="price" [(ngModel)]="book.price" name="price">
 
   <br>
-  <input type="file" (change)="onFileChanged($event)" />
+  <input type="file" class="form-control" (change)="onFileChanged($event)" />
   <div>
     <img [src]="imgUrl" height="200" width="200" alt="book img" *ngIf="imgUrl">
   </div>

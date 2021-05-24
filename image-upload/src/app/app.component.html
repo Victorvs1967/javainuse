@@ -1,0 +1,32 @@
+<nav class="navbar-dark bg-dark mb-4 px-4">
+  <div class="navbar-brand">ImageUpload</div>
+</nav>
+<div class="container row">
+  <div class="col-md-12">
+    <h1>Upload Image</h1>
+  </div>
+</div>
+<div class="container row">
+  <div class="col-md-6">
+    <input type="file" class="form-control" (change)="onFileChanged($event)">
+  </div>
+  <div class="col-md-6">
+    <input type="button" class="btn btn-primary btn-small px-4" (click)="onUpload()" value="Upload">
+  </div>
+</div>
+<hr>
+<div class="container row">
+  <div class="col-md-6">
+    <input type="text" class="form-control" id="name" name="name" placeholder="image name" [(ngModel)]="imageName">
+  </div>
+  <div class="col-md-6">
+    <input type="button" class="btn btn-primary btn-small" (click)="getImage()" value="Get Image">
+  </div>
+</div>
+<div class="container row">
+  <div class="col-md-12 mt-2">
+    <div *ngIf="retrievedImage">
+      <img [src]="retrievedImage" alt="retrived image">
+    </div>
+  </div>
+</div>

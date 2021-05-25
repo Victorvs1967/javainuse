@@ -1,29 +1,45 @@
-<nav class="navbar-dark bg-dark mb-4 px-4">
-  <div class="navbar-brand">ImageUpload</div>
-</nav>
+<mat-toolbar>
+  <mat-icon style="margin-right: 1rem;">menu</mat-icon>
+  <a mat-button href="/">Image Upload</a>
+</mat-toolbar>
+
 <div class="container row">
   <div class="col-md-12">
     <h1>Upload Image</h1>
   </div>
 </div>
-<div class="container row">
-  <div class="col-md-6">
-    <input type="file" class="form-control" (change)="onFileChanged($event)">
-  </div>
-  <div class="col-md-6">
-    <input type="button" class="btn btn-primary btn-small px-4" (click)="onUpload()" value="Upload">
-  </div>
-</div>
+
+<form class="input-form">
+  <h4>Upload Image</h4>
+  <mat-form-field class="form-field" appearance="fill">
+    <input hidden type="file" id="fileInput" #fileInput (change)="onFileChanged($event)">
+    <input matInput readonly mat-button class="input-btn" (click)="fileInput.click()" />
+    <mat-label class="form-label" *ngIf="selectedFile; else newFile">{{ selectedFile.name }}</mat-label>
+    <ng-template #newFile>
+      <mat-label class="form-label">Choose File</mat-label>
+    </ng-template>
+    <button mat-icon-button matSuffix (click)="onUpload()">
+      <mat-icon style="font-size: 1.5rem;">file_upload</mat-icon>
+    </button>
+  </mat-form-field>
+  <h4>View Image</h4>
+  <mat-form-field class="form-field" appearance="fill">
+    <mat-label class="form-label">Image Name</mat-label>
+    <input matInput name="name" [(ngModel)]="imageName" (click)="getImageNames()" />
+    <mat-select name="name" [(ngModel)]="imageName">
+      <mat-option *ngFor="let name of imageNames" [value]="name">
+        {{ name }}
+      </mat-option>
+    </mat-select>
+    <button mat-icon-button matSuffix (click)="getImage()">
+      <mat-icon style="font-size: 1.5rem;">file_download</mat-icon>
+    </button>
+  </mat-form-field>
+
+</form>
+
 <hr>
-<div class="container row">
-  <div class="col-md-6">
-    <input type="text" class="form-control" id="name" name="name" placeholder="image name" [(ngModel)]="imageName">
-  </div>
-  <div class="col-md-6">
-    <input type="button" class="btn btn-primary btn-small" (click)="getImage()" value="Get Image">
-  </div>
-</div>
-<div class="container row">
+<div class="container row">  
   <div class="col-md-12 mt-2">
     <div *ngIf="retrievedImage">
       <img [src]="retrievedImage" alt="retrived image">

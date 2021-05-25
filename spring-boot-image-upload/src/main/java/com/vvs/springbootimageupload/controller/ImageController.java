@@ -2,7 +2,9 @@ package com.vvs.springbootimageupload.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -52,6 +54,14 @@ public class ImageController {
       throw new IOException("File not found.");
     }
     return img;
+  }
+
+  @GetMapping("/get")
+  public List<String> getAll() {
+    return imageRepository.findAll()
+            .stream()
+            .map(ImageModel::getName)
+            .collect(Collectors.toList());
   }
 
   // compress the inage bytes before storing it in the database

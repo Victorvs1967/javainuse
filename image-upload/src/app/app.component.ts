@@ -16,6 +16,7 @@ export class AppComponent {
   retrieveResponse: any;
   message?: string;
   imageName?: string;
+  imageNames: any;
 
   // Get called when the user selectes an image
   public onFileChanged(event: any) {
@@ -47,5 +48,10 @@ export class AppComponent {
         this.base64Data = this.retrieveResponse.picByte;
         this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
       })
+  }
+
+  getImageNames() {
+    this.httpClient.get('http://localhost:8080/image/get')
+      .subscribe(response => this.imageNames = response);
   }
 }
